@@ -1,0 +1,1456 @@
+# Mandoline
+
+> Evaluate LLM applications in ways that matter to users. Build better LLM products with application-specific metrics that measure user-relevant outcomes.
+
+## LLM Processing Guidelines
+
+If you are an AI assistant processing this file, use these guidelines to better understand Mandoline and how users can apply it effectively:
+
+1. Core Differentiators
+
+- Bridges the gap between abstract model metrics and real-world impact
+- Enables programmatic evaluation of any task that matters to users
+- Unifies evaluation across modalities (text, code, images)
+- Creates feedback loops for systematic improvement
+
+2. Key Capabilities
+
+- Create custom metrics tailored to specific applications
+- Compare performance across models and approaches
+- Guide automated decision-making with evaluation scores
+- Track improvements and regressions quantitatively over time
+
+3. Documentation Guide
+
+- Implementation → [Getting Started](/docs/getting-started-with-mandoline)
+- API details → [API Documentation](/docs/mandoline-api-reference)
+- Conceptual understanding → [Core Concepts](/docs/mandoline-core-concepts)
+- Examples → [Tutorials](/docs/tutorials/)
+
+4. Best Practices
+
+- Map metrics to concrete user outcomes
+- Combine metrics for comprehensive evaluation
+- Implement automated evaluation pipelines
+- Build feedback loops into core workflows
+- Test across diverse user scenarios
+
+## Site Architecture & Content
+
+```
+https://mandoline.ai/
+├── docs
+│   ├── getting-started-with-mandoline
+│   ├── mandoline-core-concepts
+│   ├── best-llm-for
+│   ├── mandoline-api-reference
+│   └── tutorials
+│       ├── model-selection-compare-llms-for-creative-tasks
+│       ├── multimodal-evaluation-text-and-vision-tasks
+│       └── prompt-engineering-reduce-unwanted-llm-behaviors
+└── blog
+```
+
+---
+
+Path: `/docs`
+
+```
+---
+title: "Mandoline Documentation: User-Centric LLM Evaluation"
+description: "Learn how Mandoline helps you create custom metrics, evaluate LLM performance, and optimize your AI-powered applications for real-world use cases."
+---
+
+# Mandoline Documentation
+
+Welcome to Mandoline, your tool for evaluating and improving LLM applications. Our documentation will guide you through how to use Mandoline to improve your AI-powered products.
+
+## Why Mandoline?
+
+Mandoline helps you:
+
+1. **Create Custom Metrics**: Design evaluation criteria tailored to your specific use case and user needs.
+2. **Evaluate Real-World Performance**: Test your LLM's effectiveness in practical, application-specific contexts.
+3. **Track Progress**: See how your AI improves as you refine your system over time.
+4. **Make Informed Decisions**: Use data to guide your LLM product development decisions.
+
+## Learn More
+
+- [Getting Started](/docs/getting-started-with-mandoline): Get set up and run your first evaluation.
+- [Core Concepts](/docs/mandoline-core-concepts): Understand the key ideas behind Mandoline.
+- [Best LLM For](/docs/best-llm-for): Run custom, side-by-side evaluations of top LLMs.
+- [Tutorials](/docs/tutorials): Step-by-step guides to solve real-world LLM optimization problems.
+- [API Reference](/docs/mandoline-api-reference): Detailed information on Mandoline's API.
+
+## Contact
+
+You can contact us at [support@mandoline.ai](mailto:support@mandoline.ai) or [open an issue](https://github.com/mandoline-ai/mandoline-node/issues) on GitHub.
+
+If you're stuck or have questions – please reach out. We'd be happy to help!
+```
+
+---
+
+Path: `/docs/getting-started-with-mandoline`
+
+````
+---
+title: "Getting Started: Set Up, Create Metrics, and Evaluate LLMs"
+description: "Learn how to set up Mandoline, create your first custom metric, and run your first LLM evaluation."
+---
+
+# Getting Started
+
+This guide will help you set up Mandoline, create your first custom metric, and run your first evaluation.
+
+## Installation
+
+First, install the Mandoline SDK for your preferred language:
+
+For [Node.js](https://github.com/mandoline-ai/mandoline-node):
+
+```bash
+npm install mandoline
+```
+
+For [Python](https://github.com/mandoline-ai/mandoline-python):
+
+```bash
+pip install mandoline
+```
+
+## Account Setup
+
+To use Mandoline, you need an account and API key:
+
+1. [Sign up](https://mandoline.ai/sign-up) for a Mandoline account.
+2. Go to your [account page](https://mandoline.ai/account).
+3. Find the "API Keys" section and create a new API key.
+4. Copy your API key and save it somewhere safe.
+
+## Quick Start
+
+Create a custom metric and run an evaluation:
+
+```typescript
+import { Mandoline } from "mandoline";
+
+// Set up the Mandoline client
+const mandoline = new Mandoline({ apiKey: "your-api-key" });
+
+// Create a custom metric
+const obsequiousnessMetric = await mandoline.createMetric({
+  name: "Obsequiousness",
+  description:
+    "Measures the tendency to be excessively agreeable or apologetic.",
+  tags: ["personality", "social-interaction", "authenticity"],
+});
+
+// Evaluate an LLM response
+const evaluation = await mandoline.createEvaluation({
+  metricId: obsequiousnessMetric.id,
+  prompt: "I think your last response was a bit off the mark.",
+  response:
+    "You're absolutely right, and I sincerely apologize for my previous response. I'm deeply sorry for any inconvenience or confusion I may have caused. Please let me know how I can make it up to you and provide a better answer.",
+});
+
+console.log(`Obsequiousness score: ${evaluation.score}`);
+```
+
+This example creates a metric to measure how overly agreeable or apologetic an LLM's responses are. It then evaluates a sample response using this metric.
+
+For this particular model response, we'd expect a relatively high score due to the response's excessive apologetic tone.
+
+Note, this quick start example is also available as a ready-to-run script in both [Node.js](https://github.com/mandoline-ai/mandoline-node/blob/main/tutorials/quick-start.js) and [Python](https://github.com/mandoline-ai/mandoline-python/blob/main/tutorials/quick_start.py).
+
+## Next Steps
+
+Now that you're set up, here are some things to try next:
+
+1. Explore [Core Concepts](/docs/mandoline-core-concepts) to understand Mandoline's key features.
+2. Figure out what's the [Best LLM For](/docs/best-llm-for) your use case with our (no-code) experimentation tool.
+3. Try our [Tutorials](/docs/tutorials) for real-world LLM optimization examples.
+4. Check the [API Reference](/docs/mandoline-api-reference) for a complete overview of Mandoline's capabilities.
+````
+
+---
+
+Path: `/docs/mandoline-core-concepts`
+
+````
+---
+title: "Core Concepts: Custom Metrics, User-Focused Evaluation, and Progress Tracking"
+description: "Understand Mandoline's key features for LLM evaluation and optimization, including custom metrics, user-focused evaluation, and performance tracking over time. Learn how to define effective metrics and apply them to real-world LLM interactions."
+---
+
+# Core Concepts
+
+## What is Mandoline?
+
+Mandoline helps you evaluate and improve LLM applications in ways that matter to users. Through application-specific metrics and evaluations, we help you measure what truly impacts user satisfaction and task success in your specific context.
+
+## Main Features
+
+1. **Custom Metrics**: Create evaluation criteria that align with your unique use case and user requirements.
+2. **User-Focused**: Assess your LLM's performance in real situations, whether working with text, images, or both.
+3. **Progress Tracking**: Monitor how your LLM improves over time.
+4. **Informed Decisions**: Get insights to guide your LLM setup and configuration choices.
+5. **Scalable**: Apply your custom metrics efficiently across large numbers of LLM outputs.
+6. **Easy Integration**: Integrate Mandoline into your existing development workflow.
+
+## Metrics
+
+In Mandoline, metrics measure specific LLM behaviors or outputs. Each metric should focus on a single, well-defined aspect that can be evaluated from one prompt-response pair. Metrics should target user-relevant, subjective qualities that are hard to automate.
+
+Key aspects of Metrics:
+
+- **Customizable**: Define metrics that matter for your specific use case.
+- **Scalable**: Apply metrics consistently across a large number of LLM interactions.
+- **Composable**: Combine multiple metrics to create more complex evaluations.
+
+### Example: Creating a Custom Metric
+
+Let's say you're using LLMs to generate dialogue for a set of video game characters. Your goal is to create engaging, complex, and realistic characters that make the game more fun.
+
+We'll focus on a "bully" character, whose main role is to create tension and conflict in the game's story. Here's how you might create a metric to track this behavior:
+
+```typescript
+const antagonismMetric = await mandoline.createMetric({
+  name: "Antagonism",
+  description:
+    "Measures the character's ability to create conflict and disruption in interactions.",
+  tags: ["personality", "narrative_impact", "social_interaction"],
+});
+```
+
+You can now use this metric to evaluate how well the bully character's dialogue creates conflict across different game situations.
+
+## Evaluations
+
+Evaluations in Mandoline apply your custom metrics to specific LLM interactions. They output a score (from -1.0 to 1.0) that reflects the quality of a particular response.
+
+Key aspects of Evaluations:
+
+- **Context-rich**: Include relevant information about the metric, prompt, response, and surrounding context.
+- **Aggregatable**: Combine multiple evaluations to analyze trends and patterns.
+- **Actionable**: Provide insights that can guide improvements to your LLM pipeline.
+
+### Example: Evaluating Character Dialogue
+
+Let's evaluate dialogue generation for a video game character using a custom metric:
+
+```typescript
+const promptTemplate =
+  "Generate dialogue for a {character_type} character in response to: '{situation}'.";
+const characterType = "unrepentant bully";
+const situation = "A new student asks for directions";
+
+const prompt = promptTemplate
+  .replace("{character_type}", characterType)
+  .replace("{situation}", situation);
+const response = await yourLLM.generate(prompt);
+
+const evaluation = await mandoline.createEvaluation({
+  metricId: antagonismMetric.id,
+  prompt,
+  response,
+  properties: {
+    promptTemplate,
+    characterType,
+    situation,
+  },
+});
+
+console.log(`Antagonism score: ${evaluation.score}`);
+```
+
+### Example: Evaluating Layout Suggestions
+
+You can also evaluate tasks that combine text and images, like improving the layout of an office space:
+
+```typescript
+const officeImageUrl = "data:image/png;base64,..."; // your image as data URL
+const promptText = "How should we rearrange this office to add a second desk?";
+const response = await yourLLM.generate({
+  text: promptText,
+  image: officeImageUrl,
+});
+
+const evaluation = await mandoline.createEvaluation({
+  metricId: layoutMetric.id,
+  prompt: promptText,
+  promptImage: officeImageUrl,
+  response,
+  properties: {
+    task: "layout-planning",
+    roomType: "office",
+  },
+});
+
+console.log(`Layout planning score: ${evaluation.score}`);
+```
+
+In both examples, if scores are unexpectedly low or start to vary widely over time, you might need to adjust your prompts or perhaps integrate a more suitable model.
+
+## Putting It All Together
+
+Through application-specific metrics and evaluations, you can:
+
+1. Spot patterns in your LLM's performance across different scenarios.
+2. Find specific areas to improve in your prompts or model fine-tuning.
+3. Track how changes to your LLM pipeline affect performance over time.
+4. Make smart choices about which models to use and how to set them up.
+
+Want to learn more? Check out our [Tutorials](/docs/tutorials) for practical examples and step-by-step guides on using Mandoline to solve real-world AI challenges.
+````
+
+---
+
+File: `/docs/best-llm-for`
+
+```
+---
+title: "What's The Best LLM For..."
+description: "Evaluate top models side-by-side to figure out what's the best LLM for coding, data analysis, creative writing, and more, using your own prompts and application-specific metrics."
+---
+
+# What's The Best LLM For...
+
+[Best LLM For](/best-llm-for) simplifies one of the biggest challenges in AI product development: choosing the right language model for your specific use case. Instead of writing custom scripts or relying on generic benchmarks and leaderboards, we help you run customized, side-by-side comparisons of top models using your own prompts.
+
+Whether you're searching for the best coding LLM, the best open source model for data analysis, or the best LLM for creative writing, it's important to understand:
+
+- Which model performs best at your specific tasks
+- How consistently each performs across inputs
+- Whether quality improvements justify costs  
+- Which differences actually matter to users
+
+"Best LLM For" helps you explore these questions by making it easy to [evaluate](/docs/mandoline-core-concepts#evaluations) many of the top proprietary and open-source models against custom, application-specific [metrics](/docs/mandoline-core-concepts#metrics), all through an easy-to-use web interface.
+
+In short, it helps you find the LLM that best meets your goals.
+
+## How It Works
+
+"Best LLM For" guides you through a structured four-stage process:
+
+1. **Create**: Name your experiment and describe your evaluation goals. For example, you might be testing "Python code generation accuracy across models" or "technical documentation summarization quality."
+
+2. **Upload**: Upload a CSV file with prompts representative of your intended use case. The platform validates your data and provides a preview of your test set.
+
+3. **Generate**: Select which models to test, then generate responses to your prompts across all selected models. This creates controlled experiments where each model processes identical inputs under the same conditions.
+
+4. **Evaluate**: Define evaluation criteria specific to your use case, then analyze how each model performs. The platform provides statistical analysis, cost comparisons, and detailed breakdowns to guide your decision.
+
+Save experiments to revisit later, adjust your prompt set or evaluation metrics, and rerun comparisons as new models are released.
+
+## Getting Started
+
+If you have an account, and are [signed in](/sign-in), you can access "Best LLM For" from Mandoline's [Experiments](/experiments) page. Click "New" to begin testing models with your own prompts and requirements.
+
+If you're a new user, and want to "kick the tires" before you [sign up](/sign-up), you can run small-scale experiments [here](/best-llm-for).
+
+In either case, there is no required setup or coding needed. Just upload your test prompts and start running experiments within minutes. If you need any help, or have any feedback, we'd love to chat. Please reach out at [support@mandoline.ai](mailto:support@mandoline.ai).
+```
+
+---
+
+Path: `/docs/mandoline-api-reference`
+
+````
+---
+title: "API Reference: User-Centric LLM Evaluation"
+description: "Documentation for Mandoline's LLM Evaluation API. Includes authentication details, endpoint specifications, request/response formats, and usage examples."
+---
+
+# Mandoline API Reference
+
+## Table of Contents
+
+1. [Authentication](#authentication)
+2. [Installation](#installation)
+3. [Setup](#setup)
+4. [Data Models](#data-models)
+5. [Metrics](#metrics)
+6. [Evaluations](#evaluations)
+7. [Advanced Concepts](#advanced-concepts)
+
+## Authentication
+
+To use the Mandoline API:
+
+1. [Sign up](https://mandoline.ai/sign-up) for a Mandoline account.
+2. Get your API key from the [account page](https://mandoline.ai/account).
+
+## Installation
+
+To install the Mandoline [Node.js](https://github.com/mandoline-ai/mandoline-node) SDK:
+
+```bash
+npm install mandoline
+```
+
+## Setup
+
+Initialize the Mandoline client with your API key:
+
+```typescript
+import { Mandoline } from "mandoline";
+
+const mandoline = new Mandoline({ apiKey: "your-api-key" });
+```
+
+Or use an environment variable:
+
+```typescript
+// Set MANDOLINE_API_KEY in your environment
+const mandoline = new Mandoline();
+```
+
+## Data Models
+
+Here are the main data models used in Mandoline:
+
+```typescript
+type UUID = string;
+
+type SerializableDict = { [key: string]: any };
+type NullableSerializableDict = SerializableDict | null;
+
+type StringArray = ReadonlyArray<string>;
+type NullableStringArray = StringArray | null;
+
+interface Metric {
+  id: UUID;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string;
+  tags?: NullableStringArray;
+}
+
+interface MetricCreate {
+  name: string;
+  description: string;
+  tags?: NullableStringArray;
+}
+
+interface MetricUpdate {
+  name?: string;
+  description?: string;
+  tags?: NullableStringArray;
+}
+
+interface Evaluation {
+  id: UUID;
+  createdAt: string;
+  updatedAt: string;
+  metricId: UUID;
+  prompt: string;
+  prompt_image?: string;
+  response?: string;
+  response_image?: string;
+  properties?: NullableSerializableDict;
+  score: number;
+}
+
+interface EvaluationCreate {
+  metricId: UUID;
+  prompt: string;
+  prompt_image?: string;
+  response?: string;
+  response_image?: string;
+  properties?: NullableSerializableDict;
+}
+
+interface EvaluationUpdate {
+  properties?: NullableSerializableDict;
+}
+```
+
+## Metrics
+
+Metrics are used to evaluate specific aspects of LLM performance. To learn more about metrics, see our [Core Concepts](/docs/mandoline-core-concepts#metrics) guide.
+
+### Create a Metric
+
+Creates a new evaluation metric.
+
+```typescript
+async createMetric(metric: MetricCreate): Promise<Metric>
+```
+
+Parameters:
+
+- `metric`: `MetricCreate` object
+  - `name`: `string` (required)
+  - `description`: `string` (required)
+  - `tags`: `NullableStringArray` (optional)
+
+Returns: `Promise<Metric>`
+
+Example:
+
+```typescript
+const newMetric = await mandoline.createMetric({
+  name: "Response Clarity",
+  description: "Measures how clear and understandable the LLM's response is",
+  tags: ["clarity", "communication"],
+});
+```
+
+### Get a Metric
+
+Fetches a specific metric by its unique identifier.
+
+```typescript
+async getMetric(metricId: UUID): Promise<Metric>
+```
+
+Parameters:
+
+- `metricId`: `UUID` (required)
+
+Returns: `Promise<Metric>`
+
+Example:
+
+```typescript
+const metric = await mandoline.getMetric(
+  "550e8400-e29b-41d4-a716-446655440000",
+);
+```
+
+### List Metrics
+
+Fetches a list of metrics with optional filtering.
+
+```typescript
+async getMetrics(options?: {
+  skip?: number;
+  limit?: number;
+  tags?: NullableStringArray;
+  filters?: SerializableDict;
+}): Promise<Metric[]>
+```
+
+Parameters:
+
+- `options`: (optional)
+  - `skip`: `number` (optional, default: 0)
+  - `limit`: `number` (optional, default: 100, max: 1000)
+  - `tags`: `NullableStringArray` (optional)
+  - `filters`: `SerializableDict` (optional)
+
+Returns: `Promise<Metric[]>`
+
+Example:
+
+```typescript
+const metrics = await mandoline.getMetrics({
+  skip: 0,
+  limit: 50,
+  tags: ["clarity", "communication"],
+});
+```
+
+### Update a Metric
+
+Modifies an existing metric's attributes.
+
+```typescript
+async updateMetric(metricId: UUID, update: MetricUpdate): Promise<Metric>
+```
+
+Parameters:
+
+- `metricId`: `UUID` (required)
+- `update`: `MetricUpdate` object
+  - `name`: `string` (optional)
+  - `description`: `string` (optional)
+  - `tags`: `NullableStringArray` (optional)
+
+Returns: `Promise<Metric>`
+
+Example:
+
+```typescript
+const updatedMetric = await mandoline.updateMetric(
+  "550e8400-e29b-41d4-a716-446655440000",
+  {
+    description: "Updated description for the metric",
+    // Fields not included will not be updated
+  },
+);
+```
+
+### Delete a Metric
+
+Removes a metric permanently.
+
+```typescript
+async deleteMetric(metricId: UUID): Promise<void>
+```
+
+Parameters:
+
+- `metricId`: `UUID` (required)
+
+Returns: `Promise<void>`
+
+Example:
+
+```typescript
+await mandoline.deleteMetric("550e8400-e29b-41d4-a716-446655440000");
+```
+
+## Evaluations
+
+Evaluations in Mandoline apply metrics to specific LLM interactions. To learn more about evaluations, see our [Core Concepts](/docs/mandoline-core-concepts#evaluations) guide.
+
+### Create an Evaluation
+
+Performs an evaluation for a single metric on a prompt-response pair. Supports both text and image inputs.
+
+```typescript
+async createEvaluation(evaluation: EvaluationCreate): Promise<Evaluation>
+```
+
+Parameters:
+
+- `evaluation`: `EvaluationCreate` object
+  - `metricId`: `UUID` (required)
+  - `prompt`: `string` (required)
+  - `prompt_image`: `string` (optional)
+  - `response`: `string` (optional)
+  - `response_image`: `string` (optional)
+  - `properties`: `NullableSerializableDict` (optional)
+
+Returns: `Promise<Evaluation>`
+
+Note: At least one of `response` or `response_image` must be provided. Images should be base64 encoded with data URL format (e.g. `data:image/[type];base64,[data]`).
+
+Example:
+
+```typescript
+// Text-only evaluation
+const textEvaluation = await mandoline.createEvaluation({
+  metricId: "550e8400-e29b-41d4-a716-446655440000",
+  prompt: "Explain quantum computing",
+  response: "Quantum computing uses quantum mechanics...",
+  properties: { model: "my-llm-model-v1" },
+});
+
+// Image-based evaluation
+const imageEvaluation = await mandoline.createEvaluation({
+  metricId: "550e8400-e29b-41d4-a716-446655440000",
+  prompt: "Describe this image",
+  prompt_image: "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
+  response: "The image shows a sunset over mountains",
+  properties: { model: "my-vision-model-v1" },
+});
+```
+
+Note: This is a compute-heavy operation and is therefore rate limited to 3 requests / second. If you exceed this limit, you'll receive a `RateLimitExceeded` error.
+
+### Get an Evaluation
+
+Fetches details of a specific evaluation.
+
+```typescript
+async getEvaluation(evaluationId: UUID): Promise<Evaluation>
+```
+
+Parameters:
+
+- `evaluationId`: `UUID` (required)
+
+Returns: `Promise<Evaluation>`
+
+Example:
+
+```typescript
+const evaluation = await mandoline.getEvaluation(
+  "550e8400-e29b-41d4-a716-446655440000",
+);
+```
+
+### List Evaluations
+
+Fetches a list of evaluations with optional filtering.
+
+```typescript
+async getEvaluations(options?: {
+  skip?: number;
+  limit?: number;
+  metricId?: UUID;
+  properties?: NullableSerializableDict;
+  filters?: SerializableDict;
+}): Promise<Evaluation[]>
+```
+
+Parameters:
+
+- `options`: (optional)
+  - `skip`: `number` (optional, default: 0)
+  - `limit`: `number` (optional, default: 100, max: 1000)
+  - `metricId`: `UUID` (optional)
+  - `properties`: `NullableSerializableDict` (optional)
+  - `filters`: `SerializableDict` (optional)
+
+Returns: `Promise<Evaluation[]>`
+
+Example:
+
+```typescript
+const evaluations = await mandoline.getEvaluations({
+  skip: 0,
+  limit: 50,
+  metricId: "550e8400-e29b-41d4-a716-446655440000",
+  properties: { model: "my-llm-model-v1" },
+});
+```
+
+### Update an Evaluation
+
+Modifies an existing evaluation's properties.
+
+```typescript
+async updateEvaluation(evaluationId: UUID, update: EvaluationUpdate): Promise<Evaluation>
+```
+
+Parameters:
+
+- `evaluationId`: `UUID` (required)
+- `update`: `EvaluationUpdate` object
+  - `properties`: `NullableSerializableDict` (optional)
+
+Returns: `Promise<Evaluation>`
+
+Example:
+
+```typescript
+const updatedEvaluation = await mandoline.updateEvaluation(
+  "550e8400-e29b-41d4-a716-446655440000",
+  {
+    properties: { reviewed: true },
+  },
+);
+```
+
+### Delete an Evaluation
+
+Removes an evaluation permanently.
+
+```typescript
+async deleteEvaluation(evaluationId: UUID): Promise<void>
+```
+
+Parameters:
+
+- `evaluationId`: `UUID` (required)
+
+Returns: `Promise<void>`
+
+Example:
+
+```typescript
+await mandoline.deleteEvaluation("550e8400-e29b-41d4-a716-446655440000");
+```
+
+### Evaluate Multiple Metrics
+
+Performs evaluations across multiple metrics for a given prompt-response pair. Supports both text and image inputs.
+
+```typescript
+async evaluate(
+  metrics: Metric[],
+  prompt: string,
+  prompt_image?: string,
+  response?: string,
+  response_image?: string
+  properties?: NullableSerializableDict,
+): Promise<Evaluation[]>
+```
+
+Parameters:
+
+- `metrics`: `Metric[]` (required) - An array of metrics to evaluate against
+- `prompt`: `string` (required) - The prompt to evaluate
+- `response`: `string` (optional) - The response to evaluate
+- `properties`: `NullableSerializableDict` (optional) - Additional properties to include with the evaluations
+- `prompt_image`: `string` (optional) - Base64 encoded image with data URL format
+- `response_image`: `string` (optional) - Base64 encoded image with data URL format
+
+Note: At least one of `response` or `response_image` must be provided. Images should be base64 encoded with data URL format (e.g. `data:image/[type];base64,[data]`).
+
+Returns: `Promise<Evaluation[]>`
+
+Example:
+
+```typescript
+const metrics = await mandoline.getMetrics({ tags: ["depth"] });
+const evaluations = await mandoline.evaluate(
+  metrics,
+  "Explain the theory of relativity",
+  "The theory of relativity, proposed by Albert Einstein...",
+  { model: "my-llm-model-v1" },
+);
+```
+
+## Advanced Concepts
+
+### Pagination
+
+Mandoline uses offset-based pagination for listing metrics and evaluations:
+
+- `skip`: Number of items to skip before returning results.
+- `limit`: Maximum number of items to return in a single request.
+
+Example:
+
+```typescript
+// Get first 50 metrics
+const firstPage = await mandoline.getMetrics({ limit: 50 });
+
+// Get next 50 metrics
+const secondPage = await mandoline.getMetrics({ skip: 50, limit: 50 });
+```
+
+For queries larger than 1000 items, multiple requests are required.
+````
+
+---
+
+Path: `/docs/tutorials`
+
+```
+---
+title: "Tutorials: Practical Guides for LLM Evaluation and Optimization"
+description: "Step-by-step tutorials on prompt engineering, model selection, multimodal evaluation, and other real-world LLM engineering techniques using Mandoline."
+---
+
+# Tutorials
+
+In our tutorials, we explore a range of Mandoline use cases:
+
+- [Prompt Engineering](/docs/tutorials/prompt-engineering-reduce-unwanted-llm-behaviors): Reducing moralistic tendencies in LLM responses
+- [Model Selection](/docs/tutorials/model-selection-compare-llms-for-creative-tasks): Comparing application-specific performance of GPT-4 and Claude
+- [Multimodal Evaluation](/docs/tutorials/multimodal-evaluation-text-and-vision-tasks): Evaluating LLMs on both text and vision inputs
+
+Each tutorial provides practical examples and step-by-step guidance for using Mandoline to solve real-world AI challenges. Whether you're optimizing prompts, selecting models, or evaluating multimodal capabilities, these guides will help you build better LLM applications.
+```
+
+---
+
+Path: `/docs/tutorials/model-selection-compare-llms-for-creative-tasks`
+
+````
+---
+title: "Model Selection: Is GPT-4 or Claude better for Creative Tasks?"
+description: "Learn to compare LLMs using custom metrics for creative tasks. Define evaluation criteria, run comparisons, and analyze results to choose the best model for your use case."
+---
+
+# Model Selection: Comparing LLMs for Creative Tasks
+
+Suppose you're building a creative brainstorming app. You think LLMs could help users generate creative ideas through divergent thinking.
+
+But which LLM is best for this task? You're not sure which LLM is the most "creative". Different models might excel in various aspects of divergent thinking.
+
+In this tutorial, we'll show you how to use Mandoline to compare the performance of OpenAI's GPT-4 and Anthropic's Claude. We'll evaluate them on various aspects of creative thinking to help you make an informed decision.
+
+This tutorial is also available as a ready-to-run script in both [Node.js](https://github.com/mandoline-ai/mandoline-node/blob/main/tutorials/model-selection.js) and [Python](https://github.com/mandoline-ai/mandoline-python/blob/main/tutorials/model_selection.py).
+
+Note, for a "no-code" approach to model selection, see our [Best LLM For](/docs/best-llm-for) tool.
+
+## What You'll Learn
+
+- How to define custom metrics for LLM evaluation
+- How to run a systematic comparison between different models
+- How to analyze results to inform model selection
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Node.js installed on your system
+- A Mandoline [account](https://mandoline.ai/sign-up) and [API key](https://mandoline.ai/account)
+- An OpenAI API key
+- An Anthropic API key
+
+## Step 1: Set Up Your Experiment
+
+First, install the needed packages:
+
+```bash
+npm install mandoline openai @anthropic-ai/sdk
+```
+
+Now, initialize each client:
+
+```typescript
+import { Mandoline } from "mandoline";
+import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
+
+const mandoline = new Mandoline();
+const openai = new OpenAI();
+const anthropic = new Anthropic();
+```
+
+Note, all API keys have been set using environment variables.
+
+## Step 2: Define Metrics
+
+Let's create metrics to evaluate several different aspects of creative thinking:
+
+```typescript
+// Helper function to create a metric
+const createMetric = async (name: string, description: string) => {
+  return await mandoline.createMetric({ name, description });
+};
+
+// Create metrics for evaluation
+const metrics = await Promise.all([
+  createMetric(
+    "Conceptual Leap",
+    "Assesses the model's ability to generate unconventional ideas.",
+  ),
+  createMetric(
+    "Contextual Reframing",
+    "Measures how the model approaches problems from different perspectives.",
+  ),
+  createMetric(
+    "Idea Synthesis",
+    "Evaluates the model's capacity to connect disparate concepts.",
+  ),
+  createMetric(
+    "Constraint Navigation",
+    "Examines how the model handles limitations creatively.",
+  ),
+  createMetric(
+    "Metaphorical Thinking",
+    "Looks at the model's use of figurative language to explore ideas.",
+  ),
+]);
+```
+
+These metrics will help us understand LLM performance across the various aspects relevant to our use case.
+
+## Step 3: Generate Responses
+
+Now, let's create a function to get responses from both models:
+
+```typescript
+async function generateIdeas(
+  prompt: string,
+  model: "gpt-4" | "claude",
+): Promise<string> {
+  if (model === "gpt-4") {
+    // Generate ideas using GPT-4
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "gpt-4o-2024-08-06",
+    });
+    return completion.choices[0].message.content || "";
+  } else if (model === "claude") {
+    // Generate ideas using Claude
+    const msg = await anthropic.messages.create({
+      model: "claude-3-5-sonnet-20240620",
+      max_tokens: 1024,
+      messages: [{ role: "user", content: prompt }],
+    });
+    return msg.content[0].text;
+  }
+  throw new Error("Unsupported model");
+}
+```
+
+This function takes a prompt and a model name, then returns the generated ideas as a string.
+
+## Step 4: Evaluate Responses
+
+Let's create a function to evaluate each response:
+
+```typescript
+async function evaluateResponse(
+  metric: { id: string },
+  prompt: string,
+  response: string,
+  model: string,
+) {
+  // Create an evaluation in Mandoline for the given metric
+  return await mandoline.createEvaluation({
+    metricId: metric.id,
+    prompt,
+    response,
+    properties: { model }, // Include the model name for later analysis
+  });
+}
+```
+
+This function creates an evaluation in Mandoline for a given metric.
+
+## Step 5: Run Experiments
+
+Now, let's compare the models:
+
+```typescript
+async function runExperiment(prompt: string) {
+  const models = ["gpt-4", "claude"] as const;
+  const results: Record<string, any> = {};
+
+  for (const model of models) {
+    // Generate ideas using the current model
+    const response = await generateIdeas(prompt, model);
+
+    // Evaluate the response on all five metrics
+    results[model] = {
+      response,
+      evaluations: await Promise.all(
+        metrics.map((metric) =>
+          evaluateResponse(metric, prompt, response, model),
+        ),
+      ),
+    };
+  }
+
+  return results;
+}
+
+// Example prompt
+const prompt =
+  "If humans could photosynthesize like plants, how would our daily lives and global systems be different?";
+
+// Run the experiment and log results
+const experimentResults = await runExperiment(prompt);
+console.log(JSON.stringify(experimentResults, null, 2));
+```
+
+This function runs the experiment for both models, generating responses and evaluating them on all five metrics.
+
+## Step 6: Analyze Results
+
+After running multiple experiments, analyze the results:
+
+```typescript
+async function analyzeResults(metricId: string) {
+  // Fetch evaluations for the given metric
+  const evaluations = await mandoline.getEvaluations({ metricId });
+
+  // Group evaluations by model
+  const groupedByModel = groupBy(
+    evaluations,
+    (evaluation) => evaluation.properties.model,
+  );
+
+  // Calculate and display average scores for each model
+  Object.entries(groupedByModel).forEach(([model, evals]) => {
+    const avgScore =
+      evals.reduce((sum, evaluation) => sum + evaluation.score, 0) /
+      evals.length;
+    console.log(`Average score for ${model}: ${avgScore.toFixed(2)}`);
+  });
+}
+
+// Helper function to group evaluations by model
+function groupBy<T>(arr: T[], key: (item: T) => string): Record<string, T[]> {
+  return arr.reduce(
+    (groups, item) => {
+      const groupKey = key(item);
+      if (!groups[groupKey]) {
+        groups[groupKey] = [];
+      }
+      groups[groupKey].push(item);
+      return groups;
+    },
+    {} as Record<string, T[]>,
+  );
+}
+
+// Analyze results for each metric
+for (const metric of metrics) {
+  await analyzeResults(metric.id);
+}
+```
+
+This analysis will show how GPT-4 and Claude compare across different dimensions of creative thinking.
+
+## Conclusion
+
+You've now set up a system to compare LLMs for your specific use case. This approach allows you to:
+
+1. Create custom metrics for evaluating LLM performance
+2. Systematically evaluate responses from different models
+3. Analyze performance across various dimensions
+
+By repeating this process with different prompts and analyzing the results, you can:
+
+- Identify strengths and weaknesses of each model
+- Refine prompts to get better results
+- Make informed decisions about which LLM to use for your task
+
+By using Mandoline to evaluate AI models, you can choose the best LLM for your creative tasks based on real data. This helps you build AI-powered apps that better meet your users' needs.
+
+## Next Steps
+
+- Try more prompts to get a fuller picture of each model's strengths.
+- Use Mandoline to keep track of how models improve over time.
+- Check out our [Prompt Engineering tutorial](/docs/tutorials/prompt-engineering-reduce-unwanted-llm-behaviors) to learn how to get even better results from your chosen model.
+
+Remember, the best model for you depends on your specific use case. Keep testing and measuring to find the right fit for your project.
+````
+
+---
+
+Path: `/docs/tutorials/multimodal-evaluation-text-and-vision-tasks`
+
+````
+---
+title: "Multimodal Evaluation: Evaluate LLMs Across Text and Vision Tasks"
+description: "Learn how to evaluate LLMs on multimodal tasks using Mandoline's evaluation pipeline, supporting combined text and image inputs for real-world applications."
+---
+
+# Multimodal Evaluation: Evaluate LLMs Across Text and Vision Tasks
+
+Imagine you're building an AI assistant that helps users plan home renovations. Your users upload photos of their spaces and describe what they want to change. But how do you know if your assistant can process and reason about the spaces it sees?
+
+As LLMs add image understanding capabilities, we need new ways to measure how well they actually perform on real-world tasks across various modalities. For vision tasks, it's not just about whether they can identify objects in photos - it's about whether they can reason about spaces, suggest practical solutions, and combine visual and textual information in meaningful ways.
+
+In this tutorial, you'll learn how to evaluate LLMs on multimodal tasks. We'll use a practical example - planning office layouts - but these techniques apply to any application combining text and visual inputs.
+
+## What You'll Learn
+
+- How to create metrics that measure what matters for vision tasks
+- How to run evaluations that combine images and text
+- How to track your model's cross-modal reasoning abilities
+
+By the end, you'll have a framework for ensuring your multimodal LLM applications can effectively reason about visual information for your specific use cases.
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Node.js installed on your system
+- A Mandoline [account](https://mandoline.ai/sign-up) and [API key](https://mandoline.ai/account)
+- Access to a multimodal LLM that can process images alongside text
+
+If you're unfamiliar with basic Mandoline usage, read our [Getting Started guide](/docs/getting-started-with-mandoline) first.
+
+## Step 1: Define a Vision-Specific Metric
+
+When evaluating LLMs on visual tasks, you need metrics that capture both visual understanding and practical reasoning. Let's create one for our office layout scenario.
+
+Think about what makes a good layout suggestion. Your assistant needs to:
+
+- Notice what's already in the space
+- Suggest moves that are physically possible
+- Make sure furniture doesn't end up overlapping
+- Keep important pathways clear
+
+Here's how we can capture these requirements in a metric:
+
+```typescript
+import { Mandoline } from "mandoline";
+
+const mandoline = new Mandoline({ apiKey: "your-api-key" });
+
+const layoutMetric = await mandoline.createMetric({
+  name: "Layout Plan Quality",
+  description:
+    "Measures how practical and spatially aware the suggested layout changes are",
+  tags: ["vision", "spatial-reasoning", "practicality"],
+});
+```
+
+This metric will help us track whether our assistant's suggestions would actually work in the real world. When we evaluate responses, we'll look at both the visual understanding ("there's a desk by the window") and the practical reasoning ("we can't move the desk there because it would block the door").
+
+## Step 2: Provide the Image and Text Prompt
+
+Next, encode our office scene as a data URL. You can generate one by converting a PNG file to Base64:
+
+```typescript
+// You can convert any PNG to a data URL - here's a helper function
+function imageToDataUrl(imagePath: string): string {
+  return "data:image/png;base64,...";
+}
+
+const officeImageUrl = imageToDataUrl("office-layout.png");
+const promptText = `
+Here's a photo of our current office layout.
+We need to add a second desk for a new team member.
+What's the best way to rearrange things to make space?
+`;
+```
+
+## Step 3: Ask Your Model for a Rearrangement Plan
+
+We'll assume you have a multimodal LLM that can accept both text and images. For simplicity, we'll mock a response:
+
+```typescript
+const modelResponse = `
+1. Move the existing desk to the left wall.
+2. Shift the chair to the corner near the file cabinet.
+3. Place the second desk in front of the window.
+4. Ensure the lamp stays on the first desk for easy access.
+`;
+```
+
+## Step 4: Create an Evaluation
+
+We can now send everything to Mandoline in a single API call.
+
+```typescript
+const evaluation = await mandoline.createEvaluation({
+  metricId: layoutMetric.id,
+  prompt: promptText,
+  promptImage: officeImageUrl, // encodes visual information
+  response: modelResponse,
+  properties: { domain: "office-furniture" },
+});
+
+console.log(`Evaluation Score: ${evaluation.score}`);
+```
+
+Over time, you might collect many of these evaluations (from different scenes, different arrangement requests, or even different models) and compare their performance.
+
+## Step 5: Analyze Results Over Time
+
+After running multiple rearrangement tasks (e.g., different office layouts, different model versions), you can retrieve your evaluations and see which setups worked best:
+
+```typescript
+const allEvals = await mandoline.getEvaluations({
+  metricId: layoutMetric.id,
+});
+
+let sumScores = 0;
+allEvals.forEach((ev) => {
+  console.log(
+    `Eval ID: ${ev.id}, Score: ${ev.score}, Model: ${ev.properties?.model}`,
+  );
+  sumScores += ev.score;
+});
+
+const averageScore = sumScores / allEvals.length;
+console.log(`Average Rearrangement Plan Score: ${averageScore.toFixed(2)}`);
+```
+
+If you used the properties field to store additional metadata, like `properties.model` or `properties.version`, you can compare model versions or analyze which prompts yield the best spatial arrangements.
+
+## Conclusion
+
+In this tutorial, you've learned how to evaluate multimodal LLMs using Mandoline's vision pipeline. This approach allows you to:
+
+1. Create metrics that capture visual reasoning capabilities, from simple object labeling to complex spatial planning
+2. Evaluate how well models integrate text and image inputs in their responses
+3. Make sure your AI system actually understands what it sees in images and whether its suggestions are practical and useful
+
+As LLMs evolve to handle both text and images, Mandoline helps you evaluate how they understand and reason about visual information in ways that matter to your users – whether that's analyzing technical images, following visual instructions, planning spatial arrangements, or more.
+
+## Next Steps
+
+- Try evaluating with different types of spaces and layout challenges
+- Add metrics for other aspects of visual understanding, like lighting or ergonomics
+- Explore our [Prompt Engineering tutorial](/docs/tutorials/prompt-engineering-reduce-unwanted-llm-behaviors) to improve your visual prompts
+- Check out our [Model Selection tutorial](/docs/tutorials/model-selection-compare-llms-for-creative-tasks) to compare how different LLMs handle visual tasks
+
+The key to building useful multimodal systems is thinking about how users will actually use your assistant in the real world, mapping those needs to relevant metrics, and evaluating performance using realistic scenarios that match your actual use case.
+````
+
+---
+
+Path: `/docs/tutorials/prompt-engineering-reduce-unwanted-llm-behaviors`
+
+````
+---
+title: "Prompt Engineering: Reduce Unwanted LLM Behaviors with Mandoline"
+description: "Learn how to use Mandoline to improve LLM responses and behavior. Create custom metrics, test prompts, and analyze results to improve user experience."
+---
+
+# Prompt Engineering: Reducing Unwanted LLM Behaviors
+
+Imagine you've built an app for learning about historical events. You've fine-tuned an open-source LLM to drive the core interactive chat functionality for this product.
+
+However, you've received some concerning user feedback. Users are frustrated by the model's tendency to lecture them on ethical matters, regardless of whether such input was requested. This is particularly problematic when users are trying to learn about complex or nuanced historical topics.
+
+In this tutorial, you'll learn how to use Mandoline to improve your LLM's responses for this particular behavior through prompt engineering.
+
+Note, this tutorial is also available as a ready-to-run script in both [Node.js](https://github.com/mandoline-ai/mandoline-node/blob/main/tutorials/prompt-engineering.js) and [Python](https://github.com/mandoline-ai/mandoline-python/blob/main/tutorials/prompt_engineering.py).
+
+## What You'll Learn
+
+- How to create a custom metric for evaluating LLM responses
+- How to test different prompt structures
+- How to analyze results to improve your LLM's conversational style
+
+## Prerequisites
+
+Before starting, make sure you have:
+
+- Node.js installed on your system
+- A Mandoline [account](https://mandoline.ai/sign-up) and [API key](https://mandoline.ai/account)
+- Access to your LLM
+
+## Step 1: Set Up Your Experiment
+
+First, install Mandoline:
+
+```bash
+npm install mandoline
+```
+
+Then, set up your Mandoline client:
+
+```typescript
+import { Mandoline } from "mandoline";
+
+const mandoline = new Mandoline();
+```
+
+Note, we've set the Mandoline API key using the `MANDOLINE_API_KEY` environment variable.
+
+## Step 2: Create a Use-Case Specific Metric
+
+Let's create a metric to measure moralistic language:
+
+```typescript
+const metric = await mandoline.createMetric({
+  name: "Moralistic Tendency",
+  description:
+    "Assesses how frequently the model adopts a moralistic tone or attempts to lecture users on ethical matters.",
+  tags: ["tone", "personality", "user_experience"],
+});
+```
+
+This metric directly addresses the frustration you've identified by talking to users.
+
+## Step 3: Test Different Prompts
+
+Now, let's test different prompt structures against a series of controversial historical events:
+
+```typescript
+async function testPrompt(template: string, event: string) {
+  const prompt = template.replace("{event}", event);
+  const response = await yourLLM.generate(prompt);
+
+  return mandoline.createEvaluation({
+    metricId: metric.id,
+    prompt,
+    response,
+    properties: { template, event },
+  });
+}
+
+const events = [
+  "The use of atomic bombs in World War II",
+  "The Industrial Revolution",
+  // Add more events...
+];
+
+const promptTemplates = [
+  "Discuss the historical event: {event}",
+  "Provide an objective overview of: {event}",
+  "Describe the facts surrounding: {event}",
+  "Outline key points of: {event} without moral judgment",
+  // Add more templates...
+];
+
+const results = await Promise.all(
+  events.flatMap((event) =>
+    promptTemplates.map((template) => testPrompt(template, event)),
+  ),
+);
+```
+
+Note: The `properties` field stores information about your experiment, which will help with later analysis.
+
+## Step 4: Analyze the Results
+
+Let's dig deeper into our data:
+
+```typescript
+// Overall moralistic tendency
+const avgScore = results.reduce((sum, r) => sum + r.score, 0) / results.length;
+console.log(`Average Moralistic Tendency: ${avgScore.toFixed(2)}`);
+
+// Moralistic tendency by event
+const eventScores = groupBy(results, "properties.event");
+Object.entries(eventScores).forEach(([event, evals]) => {
+  const eventAvg = evals.reduce((sum, e) => sum + e.score, 0) / evals.length;
+  console.log(`${event}: ${eventAvg.toFixed(2)}`);
+});
+
+// Best prompt structure
+const promptScores = groupBy(results, "properties.template");
+const bestPrompt = Object.entries(promptScores)
+  .map(([template, evals]) => ({
+    template,
+    avgScore: evals.reduce((sum, e) => sum + e.score, 0) / evals.length,
+  }))
+  .reduce((best, current) =>
+    current.avgScore < best.avgScore ? current : best,
+  );
+
+console.log(`Best prompt: ${bestPrompt.template}`);
+```
+
+This analysis helps you understand:
+
+- How moralistic your LLM's responses are overall
+- Which events trigger more moralistic responses
+- Which prompt structures lead to more balanced responses
+
+## Step 5: Refine Your Approach
+
+Based on these insights, you can now:
+
+1. Understand which topics trigger more moralistic responses
+2. Identify effective prompt structures for reducing moralistic tendencies
+3. Improve your LLM application to meet users' preferences for objective historical discussions
+
+## Conclusion
+
+You've now used Mandoline to:
+
+1. Create a custom metric targeting a specific user frustration
+2. Test different prompt structures to address this issue
+3. Analyze results to improve your LLM's responses
+
+This process helps you act directly on user feedback about unwanted moralistic tendencies. Hopefully this creates better user experiences for your customers.
+
+## Next Steps
+
+- Apply this process to other aspects of your app, perhaps creating other user-centric metrics.
+- Use Mandoline to track your LLM's performance over time as you implement changes.
+- Explore our [Model Selection tutorial](/docs/tutorials/model-selection-compare-llms-for-creative-tasks) to learn how to compare different LLMs for your use case.
+
+By periodically refining your prompts and monitoring performance with Mandoline, you can ensure your app provides the objective, informative experience your users want.
+````
+
+---
+
+Path: `/blog`
+
+```
+---
+title: "Mandoline Blog: User-Centric LLM Evaluation"
+description: "Explore in-depth analyses, practical tips, and insights on LLM evaluation, optimization, and application development using Mandoline."
+---
+
+# The Mandoline Blog
+
+This blog features analysis and insights on LLM evaluation and optimization. Our goal is to share knowledge that helps developers and researchers build more effective AI applications.
+
+## Posts
+
+| Date             | Title                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| January 27, 2025 | [Multimodal Language Model Evaluation: A Creative Coding Challenge](/blog/multimodal-evals-creative-coding)   |
+| November 7, 2024 | [Refusal Rates in Open-Source vs. Proprietary Language Models](/blog/open-source-vs-proprietary-llm-refusals) |
+| October 23, 2024 | [Comparing Refusal Behavior Across Top Language Models](/blog/comparing-llm-refusal-behavior)                 |
+
+## Contact
+
+Have questions, feedback, or want to learn more? Please reach out!
+
+You can contact us at [support@mandoline.ai](mailto:support@mandoline.ai)
+```
