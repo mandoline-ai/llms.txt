@@ -314,7 +314,7 @@ title: "What's The Best LLM For..."
 description: "Evaluate top models side-by-side to figure out what's the best LLM for coding, data analysis, creative writing, and more, using your own prompts and application-specific metrics."
 ---
 
-# What's The Best LLM For...
+# What's The Best LLM For ...
 
 [Best LLM For](/best-llm-for) simplifies one of the biggest challenges in AI product development: choosing the right language model for your specific use case. Instead of writing custom scripts or relying on generic benchmarks and leaderboards, we help you run customized, side-by-side comparisons of top models using your own prompts.
 
@@ -328,6 +328,8 @@ Whether you're searching for the best coding LLM, the best open source model for
 "Best LLM For" helps you explore these questions by making it easy to [evaluate](/docs/mandoline-core-concepts#evaluations) many of the top proprietary and open-source models against custom, application-specific [metrics](/docs/mandoline-core-concepts#metrics), all through an easy-to-use web interface.
 
 In short, it helps you find the LLM that best meets your goals.
+
+> See our [coding leaderboard](/leaderboards/coding) and [coding evaluation experiments](/blog/whats-the-best-llm-for-coding) for examples of what's possible.
 
 ## How It Works
 
